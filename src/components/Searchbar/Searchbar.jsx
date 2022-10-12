@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import { FiSearch } from 'react-icons/fi';
+import { SearchIcon } from './svg';
 
 class SearchBar extends Component {
   state = {
@@ -26,9 +26,7 @@ class SearchBar extends Component {
       <header className="Searchbar">
         <form className="SearchForm" onSubmit={this.handleSubmit}>
           <button type="submit" className="SearchForm-button">
-            <span className="SearchForm-button-label">
-              <FiSearch size="2em" />
-            </span>
+            <SearchIcon />
           </button>
 
           <input

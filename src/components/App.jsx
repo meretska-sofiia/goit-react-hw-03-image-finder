@@ -8,21 +8,17 @@ import Loader from './Loader/Loader';
 import Modal from './Modal/Modal';
 
 export class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      images: [],
-      currentPage: 1,
-      searchQuery: '',
-      isLoading: false,
-      error: null,
-      showModal: false,
-      modalUrl: '',
-    };
-    this.btnRef = React.createRef();
-  }
+  state = {
+    images: [],
+    currentPage: 1,
+    searchQuery: '',
+    isLoading: false,
+    error: null,
+    showModal: false,
+    modalUrl: '',
+  };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_, prevState) {
     if (this.state.searchQuery !== prevState.searchQuery) {
       this.fetchImages();
     }
@@ -40,9 +36,10 @@ export class App extends Component {
   fetchImages = async () => {
     this.setState({ isLoading: true });
     try {
+      const { currentPage, searchQuery } = this.state;
       const response = await fetchPhoto({
-        page: this.state.currentPage,
-        searchQuery: this.state.searchQuery,
+        page: currentPage,
+        searchQuery: searchQuery,
       });
 
       this.setState(prevState => ({
@@ -64,19 +61,18 @@ export class App extends Component {
   };
 
   render() {
+    const { images, isLoading, showModal, modalUrl } = this.state;
     return (
       <div className="App">
         <SearchBar onSubmit={this.onChangeSerchQuery} />
         <div>
-          <ImageGallery images={this.state.images} onClick={this.toggleModal} />
+          <ImageGallery images={images} onClick={this.toggleModal} />
         </div>
-        {this.state.images.length % 12 < 1 && this.state.images.length > 0 && (
+        {images.length % 12 < 1 && images.length > 0 && (
           <ButtonLoadMore onClick={this.fetchImages} btnRef={this.btnRef} />
         )}
-        <Loader loading={this.state.isLoading} />
-        {this.state.showModal && (
-          <Modal url={this.state.modalUrl} toggleModal={this.toggleModal} />
-        )}
+        <Loader loading={isLoading} />
+        {showModal && <Modal url={modalUrl} toggleModal={this.toggleModal} />}
       </div>
     );
   }
