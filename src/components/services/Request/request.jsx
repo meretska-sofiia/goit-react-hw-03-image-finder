@@ -5,9 +5,16 @@ const imageApi = axios.create({
 });
 
 const fetchPhoto = async ({ page = 1, searchQuery = '' }) => {
-  const response = await imageApi.get(
-    `/?q=${searchQuery}&page=${page}&key=29947083-d7a9168667076548201f0ba28&image_type=photo&orientation=horizontal&per_page=12`
-  );
+  const response = await imageApi.get('/', {
+    params: {
+      q: searchQuery,
+      page,
+      key: '29947083-d7a9168667076548201f0ba28',
+      image_type: 'photo',
+      orientation: 'horizontal',
+      per_page: 12,
+    },
+  });
   return response.data.hits;
 };
 
